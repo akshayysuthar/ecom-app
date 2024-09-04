@@ -1,9 +1,28 @@
-import React from 'react'
+"use client"
+import React from 'react';
+import Link from 'next/link';
+import { AiOutlineShopping } from 'react-icons/ai'
 
-const NavBar = () => {
+import Cart from './Cart';
+import { useStateContext } from '@/cotext/StateContext';
+
+const Navbar = () => {
+  // const { showCart, setShowCart, totalQuantities } = useStateContext();
+
   return (
-    <div>NavBar</div>
+    <div className="navbar-container ">
+      <p className="logo">
+        <Link href="/">Nextlevels </Link>
+      </p>
+      <button type="button" className="cart-icon" onClick={() => setShowCart(true)}>
+        <AiOutlineShopping />
+        <span className="cart-item-qty">10</span>
+        {/* <span className="cart-item-qty">{totalQuantities}</span> */}
+      </button>
+
+      {/* {showCart && <Cart />} */}
+    </div>
   )
 }
 
-export default NavBar
+export default Navbar

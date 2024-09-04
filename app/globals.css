@@ -41,6 +41,8 @@ a {
 
 .navbar-container {
   display: flex;
+  /* margin: 0px ; */
+  align-items: center;
   justify-content: space-between;
   margin: 6px 18px;
   position: relative;

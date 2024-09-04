@@ -3,40 +3,31 @@ import Link from 'next/link';
 import { urlFor } from '@/sanity/lib/image';
 
 const Product = ({ product: { image, name, slug, price } }) => {
-  // Ensure image is properly formatted
+
 
   return (
     <div>
-      {slug ? (
-        <Link href={`/product/${slug}`}>
-          <div className="product-card">
-            <img
+      <Link href={`/product/${slug.current}`}>
+        <div className="product-card">
+          {image ? (
+            <img 
               src={image}
               width={250}
               height={250}
               className="product-image"
               alt={name}
             />
-            <p className="product-name">{name}</p>
-            <p className="product-price">${price}</p>
-          </div>
-        </Link>
-      ) : (
-        <div className="product-card">
-          <img
-            src={imageUrl}
-            width={250}
-            height={250}
-            className="product-image"
-            alt={name}
-          />
+          ) : (
+            <div className="placeholder-image" style={{ width: 250, height: 250, backgroundColor: '#ccc' }}>
+              Image Not Available
+            </div>
+          )}
           <p className="product-name">{name}</p>
           <p className="product-price">${price}</p>
-          <p className="error">Product slug not available</p>
         </div>
-      )}
+      </Link>
     </div>
   );
-};
+}
 
 export default Product;
