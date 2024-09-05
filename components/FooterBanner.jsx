@@ -1,9 +1,23 @@
-import React from 'react';
-import Link from 'next/link';
+import React from "react";
+import Link from "next/link";
 
-import { urlFor } from '@/sanity/lib/image';
+import { urlFor } from "@/sanity/lib/image";
+import { Button } from "./ui/button";
 
-const FooterBanner = ({ footerBanner: { discount, largeText1, largeText2, saleTime, smallText, midText, desc, product, buttonText, image } }) => {
+const FooterBanner = ({
+  footerBanner: {
+    discount,
+    largeText1,
+    largeText2,
+    saleTime,
+    smallText,
+    midText,
+    desc,
+    product,
+    buttonText,
+    image,
+  },
+}) => {
   return (
     <div className="footer-banner-container">
       <div className="banner-desc">
@@ -18,16 +32,14 @@ const FooterBanner = ({ footerBanner: { discount, largeText1, largeText2, saleTi
           <h3>{midText}</h3>
           <p>{desc}</p>
           <Link href={`/product/${product}`}>
-            <button type="button">{buttonText}</button>
+            <Button type="button">{buttonText}</Button>
           </Link>
         </div>
 
-        <img 
-          src={image} className="footer-banner-image"
-        />
+        <img src={image} className="footer-banner-image" />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default FooterBanner
+export default FooterBanner;

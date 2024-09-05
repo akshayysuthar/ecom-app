@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { client } from "@/sanity/lib/client";
-import Product from "@/components/Product";
+import { urlFor } from "@/sanity/lib/image"; // Ensure correct import
+import { useStateContext } from "@/context/StateContext";
 import {
   AiOutlineMinus,
   AiOutlinePlus,
@@ -10,15 +11,15 @@ import {
   AiOutlineStar,
 } from "react-icons/ai";
 
-
-export default async function ProductPage({ params }) {
-
+export default function ProductPage({ params }) {
   const router = useRouter();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [index, setIndex] = useState(0);
 
-  // Destructure slug with a fallback to an empty string
+  const { decQty, incQty, qty, onAdd, setShowCart } = useStateContext();
+
   const slug = params.slug;
 
   useEffect(() => {
@@ -30,9 +31,7 @@ export default async function ProductPage({ params }) {
         try {
           const fetchedProduct = await client.fetch(query, params);
           setProduct(fetchedProduct);
-          console.log("Product Details:", fetchedProduct);
         } catch (error) {
-          console.error("Error fetching product details:", error);
           setError("Failed to fetch product details.");
         } finally {
           setLoading(false);
@@ -40,11 +39,15 @@ export default async function ProductPage({ params }) {
       };
 
       fetchProductDetails();
-      console.log(product);
     } else {
       setLoading(false);
     }
   }, [slug]);
+
+  const handleBuyNow = () => {
+    onAdd(product, qty);
+    setShowCart(true);
+  };
 
   if (loading) return <p>Loading...</p>;
 
@@ -52,90 +55,71 @@ export default async function ProductPage({ params }) {
 
   if (!product) return <p>Product not found</p>;
 
+  // Handle the images array
+  const images = product.image?.map((img) => urlFor(img).url()) || [];
   return (
     <>
-      <div>
-        <div className="poduct-detail-container">
-          <div>
-            <div className="image-container">
-              <img
-                src="product.image"
-                alt=""
-                className="product-detail-image"
-              />
-            </div>
+      <div className="product-detail-container">
+        <div>
+          <div className="image-container">
+            <img
+              src={images[index]} // Display the image based on the current index
+              alt={product.name}
+              className="product-detail-image"
+            />
           </div>
+
           <div className="small-images-container">
-            {/* {image?.map((item, i) => (
+            {images.map((img, i) => (
               <img
                 key={i}
-                src="item"
-                alt=""
+                src={img}
+                alt={`Thumbnail ${i}`}
                 className={
                   i === index ? "small-image selected-image" : "small-image"
                 }
-                onMouseEnter={() => setIndex(i)}
+                onClick={() => setIndex(i)}
               />
-            ))} */}
-          </div>
-          <div className="product-detail-desc">
-            <h1>{product.name}</h1>
-            <div className="reviews">
-              <div>
-                <AiFillStar />
-                <AiFillStar />
-                <AiFillStar />
-                <AiFillStar />
-                <AiOutlineStar />
-              </div>
-              <p>(20)</p>
-            </div>
-            <h4>Details: </h4>
-            <p>{product.details}</p>
-            <p className="price">${product.price}</p>
-            {/* <div className="quantity">
-              <h3>Quantity:</h3>
-              <p className="quantity-desc">
-                <span className="minus" onClick={decQty}>
-                  <AiOutlineMinus />
-                </span>
-                <span className="num">{qty}</span>
-                <span className="plus" onClick={incQty}>
-                  <AiOutlinePlus />
-                </span>
-              </p>
-            </div> */}
-            {/* <div className="buttons">
-              <button
-                type="button"
-                className="add-to-cart"
-                onClick={() => onAdd(product, qty)}
-              >
-                Add to Cart
-              </button>
-              <button type="button" className="buy-now" onClick={handleBuyNow}>
-                Buy Now
-              </button>
-            </div> */}
+            ))}
           </div>
         </div>
 
-        {/* <div className="maylike-products-wrapper">
-          <h2>You may also like</h2>
-          <div className="marquee">
-            <div className="maylike-products-container track">
-              {products.map((item) => (
-                <Product key={item._id} product={item} />
-              ))}
-            </div>
+        <div className="product-detail-desc">
+          <h1>{product.name}</h1>
+          <div className="reviews">
+            <AiFillStar /> <AiFillStar /> <AiFillStar /> <AiFillStar />{" "}
+            <AiOutlineStar />
+            <p>(20)</p>
           </div>
-        </div> */}
-      </div>
-      <div>
-        <h1>{product.name}</h1>
-        <p>{product.details}</p>
-        <p>${product.price}</p>
-        {/* Render product images or other details as needed */}
+          <h4>Details: </h4>
+          <p>{product.details}</p>
+          <p className="price">${product.price}</p>
+
+          <div className="quantity">
+            <h3>Quantity:</h3>
+            <p className="quantity-desc">
+              <span className="minus" onClick={decQty}>
+                <AiOutlineMinus />
+              </span>
+              <span className="num">{qty}</span>
+              <span className="plus" onClick={incQty}>
+                <AiOutlinePlus />
+              </span>
+            </p>
+          </div>
+          <div className="buttons">
+            <button
+              type="button"
+              className="add-to-cart"
+              onClick={() => onAdd(product, qty)}
+            >
+              Add to Cart
+            </button>
+            <button type="button" className="buy-now" onClick={handleBuyNow}>
+              Buy Now
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );

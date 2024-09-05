@@ -2,6 +2,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
+import StateContextProvider from "@/components/StateContextProvider";
+import { ThemeProvider } from "@/components/themeprovider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,18 +14,27 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <div className="layout">
-          <header>
-            <NavBar />
-          </header>
-          <main className="main-container">{children}</main>
-          <footer>
-            <Footer />
-          </footer>
-        </div>
-      </body>
+    <html lang="en" suppressHydrationWarning>
+      <StateContextProvider>
+        <body className={inter.className}>
+          {/* <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          > */}
+            <div className="layout">
+              <header>
+                <NavBar />
+              </header>
+              <main className="main-container">{children}</main>
+              <footer>
+                <Footer />
+              </footer>
+            </div>
+          {/* </ThemeProvider> */}
+        </body>
+      </StateContextProvider>
     </html>
   );
 }
