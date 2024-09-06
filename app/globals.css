@@ -52,6 +52,7 @@ a {
 .main-container {
   max-width: 1400px;
   margin: auto;
+  padding: 20px;
   width: 100%;
 }
 .layout {
@@ -60,7 +61,7 @@ a {
 
 .navbar-container {
   display: flex;
-  /* margin: 0px ; */
+  margin: 0px 20px ;
   align-items: center;
   justify-content: space-between;
   margin: 6px 18px;
@@ -338,17 +339,17 @@ span.text-red {
   font-size: 18px;
   font-weight: 500;
   cursor: pointer;
-  gap: 2px;
+  gap: 1px;
   margin-left: 10px;
   border: none;
   background-color: transparent;
 }
 
 .cart-heading .heading {
-  margin-left: 10px;
+  margin-left: 5px;
 }
 .cart-num-items {
-  margin-left: 10px;
+  margin-left: 5px;
   color: #f02d34;
 }
 .empty-cart {

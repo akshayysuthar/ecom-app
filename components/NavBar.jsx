@@ -11,8 +11,8 @@ const Navbar = () => {
   const { showCart, setShowCart, totalQuantities } = useStateContext();
 
   return (
-    <div className="navbar-container ">
-      <p className="logo">
+    <div className="navbar-container px-10">
+      <p className=" font-bold text-2xl">
         <Link href="/">Nextlevels </Link>
       </p>
       <button
@@ -26,7 +26,7 @@ const Navbar = () => {
       </button>
 
       {showCart && <Cart />}
-      <ModeToggle />
+      {/* <ModeToggle /> */}
     </div>
   );
 };
